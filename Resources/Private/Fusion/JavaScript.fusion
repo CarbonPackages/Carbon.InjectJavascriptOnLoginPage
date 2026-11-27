@@ -1,0 +1,39 @@
+prototype(Carbon.InjectJavascriptOnLoginPage:JavaScript) < prototype(Neos.Fusion:Component) {
+    currentMarkup = ${value}
+    before = '</head>'
+
+    settings = ${Configuration.setting('Carbon.InjectJavascriptOnLoginPage.javascript')}
+
+    @private {
+        fileData = Neos.Fusion:Map {
+            items = ${Type.isArray(props.settings) ? props.settings : []}
+            itemRenderer = Neos.Fusion:DataStructure {
+                attributes = ${item.attributes}
+                src = Neos.Fusion:Case {
+                    noString {
+                        condition = ${!Type.isString(item.resource)}
+                        renderer = ${null}
+                    }
+                    isResource {
+                        condition = ${String.startsWith(item.resource, 'resource://')}
+                        renderer = Neos.Fusion:ResourceUri {
+                            path = ${item.resource}
+                        }
+                    }
+                    hasValue {
+                        condition = ${item.resource}
+                        renderer = ${item.resource}
+                    }
+                }
+            }
+        }
+        markup = Neos.Fusion:Loop {
+            items = ${private.fileData}
+            itemRenderer = afx`
+                <script @if={item.src} {...item.attributes} src={item.src}></script>
+            `
+        }
+    }
+
+    renderer = ${String.replace(props.currentMarkup, props.before, private.markup + props.before)}
+}

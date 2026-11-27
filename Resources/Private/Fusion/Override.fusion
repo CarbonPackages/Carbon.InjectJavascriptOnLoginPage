@@ -1,0 +1,3 @@
+prototype(Neos.Neos:View.Login) {
+    renderer.content.renderer.@process.addBackendendScripts = Carbon.InjectJavascriptOnLoginPage:JavaScript
+}

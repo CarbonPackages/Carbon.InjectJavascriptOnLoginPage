@@ -1,0 +1,7 @@
+Carbon:
+  InjectJavascriptOnLoginPage:
+    javascript:
+      Carbon.InjectJavascriptOnLoginPage.AddAutoComplete:
+        resource: 'resource://Carbon.InjectJavascriptOnLoginPage/Public/AddAutoComplete.js'
+        attributes:
+          type: 'module'
